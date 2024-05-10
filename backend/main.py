@@ -238,14 +238,39 @@ async def set_current_signal(current_signal: str):
     return current_signal
 
 
-@app.get('/get_joint_data')
-async def get_joint_data(db1: Session = Depends(get_locations_db), db2: Session = Depends(get_signals_db), db: Session = Depends(get_networks_db)):
-    nwid = db.execute(db.query(models.NetworkScans).order_by(desc(models.NetworkScans.id)).limit(1)).scalar()#max
+def get_item(stations: str, db: Session = Depends(get_stations_db)):
+    return db.query(models.Stations).filter(models.Stations.station == stations).first()
+    
 
-    joined_data = db1.query(models.LocationScans, models.SignalScans).\
-        join(models.SignalScans, and_(models.LocationScans.network_scan_id == models.SignalScans.network_scan_id, models.LocationScans.location_started_at == models.SignalScans.signal_started_at)).\
-        all()
-    return joined_data
+def replace_item(stations: str, new_station: Station, db: Session = Depends(get_stations_db)):
+    item = db.query(models.Stations).filter(models.Stations.station == stations).first()
+    if item:
+        stations_model = models.Stations()
+        stations_model.network_scan_id = new_station.network_scan_id
+        stations_model.pwr = new_station.pwr
+        stations_model.station = new_station.station 
+        db.commit()
+        db.refresh(item)
+        return item
+    return None
+
+@app.put("/stations/replace/{item_id}", response_model=Station)
+def replace_item(item_id: int, item_data: Station, db: Session = Depends(get_stations_db)):
+    db_item = get_item(db, item_id)
+    if db_item is None:
+        raise HTTPException(status_code=404, detail="Item not found")
+    return replace_item(db, item_id, item_data)
+
+
+
+# @app.get('/get_joint_data')
+# async def get_joint_data(db1: Session = Depends(get_locations_db), db2: Session = Depends(get_signals_db), db: Session = Depends(get_networks_db)):
+#     nwid = db.execute(db.query(models.NetworkScans).order_by(desc(models.NetworkScans.id)).limit(1)).scalar()#max
+
+#     joined_data = db1.query(models.LocationScans, models.SignalScans).\
+#         join(models.SignalScans, and_(models.LocationScans.network_scan_id == models.SignalScans.network_scan_id, models.LocationScans.location_started_at == models.SignalScans.signal_started_at)).\
+#         all()
+#     return joined_data
 
 
 

@@ -15,6 +15,7 @@ urlsignal = "https://10.42.0.1/api/signals/create/"
 urlstations = "https://10.42.0.1/api/stations/create/"
 urlfirstsignal = "https://10.42.0.1/api/first_signal_scan"
 urlcurrentsignal = "https://10.42.0.1/api/signals/current_signal"
+
 is_empty = True
 now = datetime.now()
 is_first_scan = True
@@ -124,17 +125,21 @@ def parse_scannings(line):
             
             if(is_first_scan):
                 found = False
+                response_station_data = {"network_scan_id": nwid+1, "station": station, "pwr": pwr}
                 for elem in stations_pwr:
                     if (station  == elem['station']):
                         found = True
                         if (pwr  > elem['pwr']):
                             elem['pwr'] = pwr
+                            requests.post('https://10.42.0.1/api/stations/replace/'+station, json.dumps(response_station_data))
                 if not found:
+                    #se ingresa a la bd
+                    requests.post(urlstations, json.dumps(response_station_data))
                     stations_pwr.append({"network_scan_id": nwid+1, "station": station, "pwr": pwr})
-                if finished:
-                    for i in stations_pwr:
-                        print(stations_pwr)
-                        requests.post(urlstations, json.dumps(i))
+                # if finished:
+                #     for i in stations_pwr:
+                #         print(stations_pwr)
+                #         requests.post(urlstations, json.dumps(i))
                 
             if(not is_first_scan):
                 request_data = { 'network_scan_id': nwid+1, 'station': station, 'pwr':pwr, 'signal_started_at': signal_started_at }
