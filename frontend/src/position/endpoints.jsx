@@ -43,6 +43,7 @@ const sendLocationData = async (locationData) => {
 const startScan = async (id) => {
     try {
         // fetch uses the RPI's Caddy URL, to avoid problems with the lack of HTTPS
+        console.log(`https://10.42.0.1/api/start_signal_scan/${id}`)
         const response = await fetch(`https://10.42.0.1/api/start_signal_scan/${id}`, {
         method: "POST",  
         });

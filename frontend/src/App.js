@@ -1,9 +1,8 @@
 import './App.css';
 import styled from "styled-components";
-import GeolocationComponent from './position/acceleration/geolocation';
-import BeginScan from './components/begin_scan';
-import ShowLocation from './position/show_location';
-import Spinner from './components/spinner';
+import BeginScan from './components/pages/begin_scan';
+
+import Spinner from './components/visual/spinner';
 import MacSelector from './components/mac_selector/mac_selector';
 // import Accelerometer from './position/accelerometer';
 

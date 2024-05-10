@@ -48,7 +48,6 @@ function MovementPlot() {
             title: 'Signal Intensity' // Add a colorbar title
           }
         },
-        color: intensity, 
         colorscale: 'Greens'
     }];
 

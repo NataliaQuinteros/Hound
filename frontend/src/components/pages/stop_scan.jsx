@@ -1,10 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import Accelerometer from '../position/acceleration/accelerometer';
-import MovementPlot from '../unused/movement_graph';
-import BeginScan from "./begin_scan";
 import { stopScan, sendNetworkData } from '../../position/endpoints';
-import { getTimeLocations } from '../position/acceleration/posCalculation'
 
 const Button = styled.button`
 padding: 20px;
@@ -18,7 +14,7 @@ class StopScan extends React.Component {
         this.state = {
             finished: false
         };
-        this.showMovementPlot = this.showMovementPlot.bind(this);
+        
     }
 
     showMovementPlot = () => {
@@ -29,7 +25,6 @@ class StopScan extends React.Component {
 
     handleClick = () => {
         this.props.toggleStopButton();
-        this.showMovementPlot();
         sendNetworkData();
         stopScan();
     };
@@ -43,7 +38,7 @@ class StopScan extends React.Component {
                 </Button>
                 {/* TODO: hacer que se muestre solo despues de haber apretado stop */}
                 
-                {(this.state.finished)? <MovementPlot/> : <></>}
+                {(this.state.finished)? <></>: <></>}
             </>
         );
     }

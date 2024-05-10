@@ -1,9 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Load from "./load";
-import Accelerometer from '../../position/acceleration/accelerometer';
 import { startScan } from '../../position/endpoints';
-// import MovementPlot from '../components/movement_graph';
 import StopScan from './stop_scan'
 
 const Button = styled.button`

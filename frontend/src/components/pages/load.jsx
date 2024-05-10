@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Spinner from '../visual/spinner';
-import Accelerometer from '../../position/acceleration/accelerometer';
 import styled from "styled-components";
 
 const Text = styled.h3`
@@ -30,7 +29,6 @@ const Load = () => {
         ) : (
         <>
           <Text> Muevase por la habitación... </Text>
-          <Accelerometer/>
         </>
 
         )}
