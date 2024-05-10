@@ -256,10 +256,10 @@ def replace_item(stations: str, new_station: Station, db: Session = Depends(get_
 
 @app.put("/stations/replace/{item_id}", response_model=Station)
 def replace_item(item_id: int, item_data: Station, db: Session = Depends(get_stations_db)):
-    db_item = get_item(db, item_id)
+    db_item = get_item(item_id, db)
     if db_item is None:
         raise HTTPException(status_code=404, detail="Item not found")
-    return replace_item(db, item_id, item_data)
+    return replace_item(item_id, item_data, db)
 
 
 
