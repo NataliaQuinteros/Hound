@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import Accelerometer from '../position/accelerometer';
-import MovementPlot from '../components/movement_graph';
+import Accelerometer from '../position/acceleration/accelerometer';
+import MovementPlot from '../unused/movement_graph';
 import BeginScan from "./begin_scan";
-import { stopScan, sendNetworkData } from '../position/endpoints';
-import { getTimeLocations } from '../position/posCalculation'
+import { stopScan, sendNetworkData } from '../../position/endpoints';
+import { getTimeLocations } from '../position/acceleration/posCalculation'
 
 const Button = styled.button`
 padding: 20px;

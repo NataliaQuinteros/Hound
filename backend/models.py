@@ -35,3 +35,12 @@ class LocationScans(Base):
     y = Column(Float)
     z = Column(Float)
     location_started_at = Column(DateTime)  
+
+# The stations and their maximum powers per scan
+class Stations(Base):
+    __tablename__ = "stations"
+
+    id = Column(Integer, primary_key = True, index = True)
+    network_scan_id = Column(Integer, index = True)
+    station = Column(String)
+    pwr = Column(Float)

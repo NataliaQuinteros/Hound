@@ -13,16 +13,16 @@ const rotate360 = keyframes`
 `;
 
 const Spinner = styled.div`
-  animation: ${rotate360} 1s linear infinite;
+  animation: ${rotate360} 2s linear infinite;
   transform: translateZ(0);
   margin: auto;
-  border-top: 4px solid Orchid;
-  border-right: 4px solid Orchid;
-  border-bottom: 4px solid Orchid;
-  border-left: 4px solid DarkOrchid;
+  border-top: 15px solid #d7cade;
+  border-right: 15px solid #d7cade;
+  border-bottom: 15px solid #d7cade;
+  border-left: 15px solid #7D4A96;
   background: transparent;
-  width: 24px;
-  height: 24px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   margin-top:50px;
   margin-bottom:50px;

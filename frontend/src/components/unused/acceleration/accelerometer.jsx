@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useReducer } from "react";
 import moment from 'moment';
 import { toPosition, sum3d, locationMean } from './posCalculation';
-import { sendLocationData, setTimeLocations } from './endpoints';
+import { sendLocationData, setTimeLocations } from '../endpoints';
 import styled from "styled-components";
 
 const Text = styled.p`

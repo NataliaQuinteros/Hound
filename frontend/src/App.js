@@ -1,7 +1,10 @@
 import './App.css';
 import styled from "styled-components";
-import GeolocationComponent from './position/geolocation';
+import GeolocationComponent from './position/acceleration/geolocation';
 import BeginScan from './components/begin_scan';
+import ShowLocation from './position/show_location';
+import Spinner from './components/spinner';
+import MacSelector from './components/mac_selector/mac_selector';
 // import Accelerometer from './position/accelerometer';
 
 const Title = styled.h1`
@@ -19,7 +22,7 @@ const App = () => {
 
     <div  className="App">
       <Title>Hound</Title>
-      <BeginScan/>
+      <MacSelector/>
     </div>
 
   );

@@ -1,10 +1,10 @@
 import models 
 import scan_manager
 
-from fastapi import FastAPI, HTTPException, Depends
+from fastapi import FastAPI, HTTPException, Depends, WebSocket, WebSocketDisconnect
 from pydantic import BaseModel, Field
 from datetime import datetime
-from database import engine_location, engine_signal, engine_network, SessionLocalLocation, SessionLocalSignal, SessionLocalNetwork
+from database import engine_location, engine_signal, engine_network, engine_stations, SessionLocalLocation, SessionLocalSignal, SessionLocalNetwork, SessionLocalStations
 from sqlalchemy.orm import Session, relationship
 from sqlalchemy import select, desc,  and_
 from fastapi.middleware.cors import CORSMiddleware
@@ -32,10 +32,27 @@ app.add_middleware(
 models.Base.metadata.create_all(bind=engine_location)
 models.Base.metadata.create_all(bind=engine_signal)
 models.Base.metadata.create_all(bind=engine_network)
-
+models.Base.metadata.create_all(bind=engine_stations)
 
 first_signal_scan_time = ""
 scan_time = []
+current_signal_global = ""
+
+# Websockets for the instant data 
+websocket_connections = set()
+
+@app.websocket("/ws")
+async def websocket(websocket: WebSocket):
+    await websocket.accept()
+    websocket_connections.add(websocket)
+
+    try:
+        while True:
+            data = await websocket.receive_text()
+            for conn in websocket_connections:
+                await conn.send_text(data)
+    finally:
+        websocket_connections.remove(websocket)
 
 
 # database getters
@@ -60,6 +77,14 @@ def get_networks_db():
     finally:
         db.close()
 
+def get_stations_db():
+    db = SessionLocalStations
+    try:
+        yield db
+    finally:
+        db.close()
+
+
 # Models
 class NetworkScan(BaseModel):
     
@@ -79,6 +104,11 @@ class SignalScan(BaseModel):
     station: str = None
     pwr: float = Field(gt=-101, lt=101)
     signal_started_at: datetime = None
+
+class Station(BaseModel):
+    network_scan_id: int = Field(gt=-1, lt=101)
+    station: str = None
+    pwr: float = Field(gt=-101, lt=101)
 
 class LocationsList(BaseModel):
     locations: List[LocationScan]
@@ -128,6 +158,17 @@ def create_signal(signal_scan: SignalScan, db: Session = Depends(get_signals_db)
     db.commit()
     return signal_scan
 
+@app.post('/stations/create/')
+def create_stations(stations: Station, db: Session = Depends(get_stations_db)):
+    stations_model = models.Stations()
+    stations_model.network_scan_id = stations.network_scan_id
+    stations_model.pwr = stations.pwr
+    stations_model.station = stations.station
+
+    db.add(stations_model)
+    db.commit()
+    return stations
+
 
 #getters
 @app.get('/networks/get/')
@@ -142,6 +183,13 @@ async def get_locations(db: Session = Depends(get_locations_db)):
 async def get_signals(db: Session = Depends(get_signals_db)):
     return db.query(models.SignalScans).all()
 
+@app.get('/stations/get/')
+async def get_stations(db: Session = Depends(get_stations_db)):
+    return db.query(models.Stations).all()
+
+@app.get('signals/get_current_signal')
+async def get_current_signal():
+    return current_signal_global
 
 # Returns the last id on the network scan
 @app.get('/networks/get_last_id/')
@@ -163,12 +211,17 @@ async def get_signal_by_instance(network_id: int, db: Session = Depends(get_sign
     signals = db.query(models.SignalScans).filter(models.SignalScans.network_scan_id == network_id).all()
     return signals
 
-# Function dedicated to send the start instruction to the other 
-@app.post('/start_signal_scan')
-def start_scanning():
-    scan_manager.run_script()
+@app.get('/stations/get_by_network_id/{network_id}')
+async def get_stations_by_instance(network_id: int, db: Session = Depends(get_stations_db)):
+    stations = db.query(models.Stations).filter(models.Stations.network_scan_id == network_id).all()
+    return stations
 
 # Function dedicated to send the start instruction to the other 
+@app.post('/start_signal_scan/{id}')
+def start_scanning(id: int):
+    scan_manager.run_script(id)
+
+# Function dedicated to send the stop instruction to the other script
 @app.post('/stop_signal_scan')
 def stop_scanning():
     scan_manager.stop_script()
@@ -179,6 +232,10 @@ def get_first_signal(data: str):
     scan_time.append(data)
 
 
+# Returns the signal currently obtained on the scan
+@app.post('/signals/current_signal')
+async def set_current_signal(current_signal: str):
+    return current_signal
 
 
 @app.get('/get_joint_data')

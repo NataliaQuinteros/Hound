@@ -8,14 +8,16 @@ fifo_pipe = 'signalpipe'
 manager_path = './scan_manager.sh'
 stop_path = './stop_scan.sh'
 file = open('monitor.txt', 'w')
-array_stations = []
+stations_pwr = []
 parsed_stations = []
+current_request_data = ''
 urlsignal = "https://10.42.0.1/api/signals/create/"
+urlstations = "https://10.42.0.1/api/stations/create/"
 urlfirstsignal = "https://10.42.0.1/api/first_signal_scan"
-
+urlcurrentsignal = "https://10.42.0.1/api/signals/current_signal"
 is_empty = True
 now = datetime.now()
-
+is_first_scan = True
 first_signal_started_at = ""
 
 urlnwid = "https://10.42.0.1/api/networks/get_last_id/"
@@ -41,11 +43,40 @@ nwid = nwid_response
 def get_first_signal_time():
     return first_signal_started_at
 
-def run_script():
+def run_script(id):
+    if (id == 0):
+        is_first_scan = True
+    if (id == 1):
+        is_first_scan = False
     subprocess.call(['sudo', 'sh', manager_path])
+
 
 def stop_script():
     subprocess.call(['sudo', 'sh', stop_path])
+    if (is_first_scan):
+        for i in stations_pwr:
+            requests.post(urlstations, json.dumps(i))
+
+def get_request_data():
+    requests.post(urlcurrentsignal, json.dumps(current_request_data))
+
+def add_max_pwr_mac(station, pwr, network_scan_id):
+    found = False
+    for elem in stations_pwr:
+        if (station  == elem['station']):
+            found = True
+            if (pwr  > elem['pwr']):
+                elem['pwr'] = pwr
+    if not found:
+        stations_pwr.append({"network_scan_id": network_scan_id, "station": station, "pwr": pwr})
+
+def send_current_signal(station, pwr, nwid, signal_started_at):
+    request_data = { 'network_scan_id': nwid+1, 'station': station, 'pwr':pwr, 'signal_started_at': signal_started_at }
+    current_request_data = request_data
+    request = requests.post(urlcurrentsignal, json.dumps(request_data))
+    print(request_data)
+
+
 
 def get_scannings():
     # nwid = get_response()
@@ -59,6 +90,8 @@ def get_scannings():
                 break
             # array_stations.append(str(line))
             parse_scannings(str(line))
+
+
 
 def parse_scannings(line):
     # for j in range (0,len(array_stations)):
@@ -98,9 +131,12 @@ def parse_scannings(line):
 
         if (station != "" and pwr != "" and bssid != ""):
             signal_started_at = now.strftime("%Y-%m-%dT%H:%M:%S")
-            request_data = { 'network_scan_id': nwid+1, 'station': station, 'pwr':pwr, 'signal_started_at': signal_started_at }
-            request = requests.post(urlsignal, json.dumps(request_data))
-            print(request_data)
+            
+            if(is_first_scan):
+                add_max_pwr_mac(nwid+1, station, pwr)
+            if(not is_first_scan):
+                send_current_signal(station, pwr, nwid+1, signal_started_at)
+            
             if(is_empty):
                 print(signal_started_at)
                 response = requests.post(urlfirstsignal, data = signal_started_at)

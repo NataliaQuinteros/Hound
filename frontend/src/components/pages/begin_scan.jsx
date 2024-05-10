@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import Load from "./load";
-import Accelerometer from '../position/accelerometer';
-import { startScan } from '../position/endpoints';
+import Accelerometer from '../../position/acceleration/accelerometer';
+import { startScan } from '../../position/endpoints';
 // import MovementPlot from '../components/movement_graph';
 import StopScan from './stop_scan'
 

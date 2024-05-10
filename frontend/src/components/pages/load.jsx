@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import Spinner from './spinner';
-import Accelerometer from '../position/accelerometer';
+import Spinner from '../visual/spinner';
+import Accelerometer from '../../position/acceleration/accelerometer';
 import styled from "styled-components";
 
 const Text = styled.h3`
