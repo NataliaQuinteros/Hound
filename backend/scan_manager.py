@@ -132,9 +132,11 @@ def parse_scannings(line):
                         if (pwr  > elem['pwr']):
                             elem['pwr'] = pwr
                             requests.post('https://10.42.0.1/api/stations/replace/'+station, json.dumps(response_station_data))
+                            print("response found", response_station_data)
                 if not found:
                     #se ingresa a la bd
                     requests.post(urlstations, json.dumps(response_station_data))
+                    print("response not found", response_station_data)
                     stations_pwr.append({"network_scan_id": nwid+1, "station": station, "pwr": pwr})
                 # if finished:
                 #     for i in stations_pwr:
