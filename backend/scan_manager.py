@@ -62,21 +62,11 @@ def stop_script():
 def get_request_data():
     requests.post(urlcurrentsignal, json.dumps(current_request_data))
 
-def add_max_pwr_mac(station, pwr, network_scan_id):
-    found = False
-    for elem in stations_pwr:
-        if (station  == elem['station']):
-            found = True
-            if (pwr  > elem['pwr']):
-                elem['pwr'] = pwr
-    if not found:
-        stations_pwr.append({"network_scan_id": network_scan_id, "station": station, "pwr": pwr})
 
-def send_current_signal(station, pwr, nwid, signal_started_at):
-    request_data = { 'network_scan_id': nwid+1, 'station': station, 'pwr':pwr, 'signal_started_at': signal_started_at }
-    current_request_data = request_data
-    request = requests.post(urlcurrentsignal, json.dumps(request_data))
-    print(request_data)
+
+
+
+    
 
 
 
@@ -135,10 +125,22 @@ def parse_scannings(line):
             signal_started_at = now.strftime("%Y-%m-%dT%H:%M:%S")
             
             if(is_first_scan):
-                add_max_pwr_mac(nwid+1, station, pwr)
+                found = False
+                for elem in stations_pwr:
+                    if (station  == elem['station']):
+                        found = True
+                        if (pwr  > elem['pwr']):
+                            elem['pwr'] = pwr
+                if not found:
+                    stations_pwr.append({"network_scan_id": nwid+1, "station": station, "pwr": pwr})
+                print(stations_pwr)
+                
             if(not is_first_scan):
-                send_current_signal(station, pwr, nwid+1, signal_started_at)
-            
+                request_data = { 'network_scan_id': nwid+1, 'station': station, 'pwr':pwr, 'signal_started_at': signal_started_at }
+                current_request_data = request_data
+                request = requests.post(urlcurrentsignal, json.dumps(request_data))
+                print(request_data)
+                        
             if(is_empty):
                 print(signal_started_at)
                 response = requests.post(urlfirstsignal, data = signal_started_at)
