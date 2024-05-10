@@ -40,8 +40,8 @@ def get_res(response):
 nwid_response = get_res(requests.get(urlnwid))
 nwid = nwid_response
 
-def get_first_signal_time():
-    return first_signal_started_at
+# def get_first_signal_time():
+#     return first_signal_started_at
 
 def run_script(id):
     if (id == 0):
@@ -142,7 +142,7 @@ def parse_scannings(line):
                 print(request_data)
                         
             if(is_empty):
-                print(signal_started_at)
+                # print(signal_started_at)
                 response = requests.post(urlfirstsignal, data = signal_started_at)
                 print (response.json())
                 is_empty = False

@@ -226,10 +226,10 @@ def start_scanning(id: int):
 def stop_scanning():
     scan_manager.stop_script()
 
-# Function dedicated to send the start instruction to the other 
-@app.post('/first_signal_scan')
-def get_first_signal(data: str):
-    scan_time.append(data)
+
+# @app.post('/first_signal_scan')
+# def get_first_signal(data: str):
+#     scan_time.append(data)
 
 
 # Returns the signal currently obtained on the scan
