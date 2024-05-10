@@ -19,7 +19,7 @@ is_empty = True
 now = datetime.now()
 is_first_scan = True
 first_signal_started_at = ""
-
+finished = False
 urlnwid = "https://10.42.0.1/api/networks/get_last_id/"
 
 def get_res(response):
@@ -54,9 +54,7 @@ def run_script(id):
 def stop_script():
     subprocess.call(['sudo', 'sh', stop_path])
     if (is_first_scan):
-        for i in stations_pwr:
-            print(stations_pwr)
-            requests.post(urlstations, json.dumps(i))
+        finished = True
 
 
 def get_request_data():
@@ -133,11 +131,13 @@ def parse_scannings(line):
                             elem['pwr'] = pwr
                 if not found:
                     stations_pwr.append({"network_scan_id": nwid+1, "station": station, "pwr": pwr})
-                print(stations_pwr)
+                if finished:
+                    for i in stations_pwr:
+                        print(stations_pwr)
+                        requests.post(urlstations, json.dumps(i))
                 
             if(not is_first_scan):
                 request_data = { 'network_scan_id': nwid+1, 'station': station, 'pwr':pwr, 'signal_started_at': signal_started_at }
-                current_request_data = request_data
                 request = requests.post(urlcurrentsignal, json.dumps(request_data))
                 print(request_data)
                         
