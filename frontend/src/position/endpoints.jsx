@@ -44,7 +44,7 @@ const startScan = async (id) => {
     try {
         // fetch uses the RPI's Caddy URL, to avoid problems with the lack of HTTPS
         
-        const response = await fetch('https://10.42.0.1/api/start_signal_scan/0', {
+        const response = await fetch(`https://10.42.0.1/api/start_signal_scan/${id}`, {
         method: "POST",  
         });
         if (!response.ok) {
