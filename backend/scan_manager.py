@@ -131,7 +131,7 @@ def parse_scannings(line):
                         found = True
                         if (pwr  > elem['pwr']):
                             elem['pwr'] = pwr
-                            requests.post('https://10.42.0.1/api/stations/replace/'+station, json.dumps(response_station_data))
+                            requests.post('https://10.42.0.1/api/stations/replace/'+str(station), json.dumps(response_station_data))
                             print("response found", response_station_data)
                 if not found:
                     #se ingresa a la bd
