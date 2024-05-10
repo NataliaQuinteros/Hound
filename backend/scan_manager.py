@@ -55,7 +55,9 @@ def stop_script():
     subprocess.call(['sudo', 'sh', stop_path])
     if (is_first_scan):
         for i in stations_pwr:
+            print(stations_pwr)
             requests.post(urlstations, json.dumps(i))
+
 
 def get_request_data():
     requests.post(urlcurrentsignal, json.dumps(current_request_data))
