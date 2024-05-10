@@ -33,7 +33,7 @@ class BeginScan extends React.Component{
 
     handleClick = () => {
         this.toggleStopButton()
-        startScan();
+        startScan(0);
       };
 
     render(){

@@ -22,7 +22,7 @@ const App = () => {
 
     <div  className="App">
       <Title>Hound</Title>
-      <MacSelector/>
+      <BeginScan/>
     </div>
 
   );
