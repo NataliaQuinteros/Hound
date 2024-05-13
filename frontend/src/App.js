@@ -24,7 +24,7 @@ const App = () => {
 
     <div  className="App">
       <Title>Hound</Title>
-      <SignalIntensity/>
+      <BeginScan/>
     </div>
 
   );
