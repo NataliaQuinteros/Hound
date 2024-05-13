@@ -78,8 +78,8 @@ function MacSelector(){
     const MakeMACTable = ({jsonMacs}) => {
         console.log(jsonMacs);
         console.log(macInfo);
-        
-        return(
+        if (jsonMacs != null){
+          return(
             <tbody>
             {jsonMacs.map(row => (
             <TableRow onClick={() => handleSelect(row.station)} key={row.id}>
@@ -89,7 +89,9 @@ function MacSelector(){
             ))}
             </tbody>
             
-        );
+          );
+        }
+        
     }
 
     const handleSelect = (station) => {
