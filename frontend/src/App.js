@@ -1,9 +1,9 @@
 import './App.css';
 import styled from "styled-components";
 import BeginScan from './components/pages/begin_scan';
-
-import Spinner from './components/visual/spinner';
+import SignalIntensity from './components/pages/signal_intensity';
 import MacSelector from './components/mac_selector/mac_selector';
+import React, { useEffect, useState, useReducer } from "react";
 // import Accelerometer from './position/accelerometer';
 
 const Title = styled.h1`
@@ -17,11 +17,14 @@ const Title = styled.h1`
 
 const App = () => {
 
+
+
+
   return (
 
     <div  className="App">
       <Title>Hound</Title>
-      <BeginScan/>
+      <SignalIntensity/>
     </div>
 
   );
