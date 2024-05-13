@@ -1,6 +1,27 @@
 import React, { useEffect, useState, useReducer } from "react";
 import styled from "styled-components";
 
+const Table = styled.table`
+  margin-left: auto;
+  margin-right: auto;
+  width: 40%;
+  border-collapse: collapse;
+`;
+
+const TableHeader = styled.th`
+  background-color: #f2f2f2;
+  padding: 8px;
+`;
+
+const TableRow = styled.tr`
+  &:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+`;
+const TableCell = styled.td`
+  padding: 8px;
+  border: 1px solid #ddd;
+`;
 
 function MacSelector(){
     const [macInfo, setMacInfo] = useState(null);
@@ -57,13 +78,14 @@ function MacSelector(){
     const MakeMACTable = ({jsonMacs}) => {
         console.log(jsonMacs);
         console.log(macInfo);
+        
         return(
             <tbody>
             {jsonMacs.map(row => (
-            <tr onClick={() => handleSelect(row.STATION)} key={row.id}>
-                <td>{row.STATION}</td>
-                <td>{row.PWR}</td>
-            </tr>
+            <TableRow onClick={() => handleSelect(row.station)} key={row.id}>
+                <TableCell>{row.station}</TableCell>
+                <TableCell>{row.pwr}</TableCell>
+            </TableRow>
             ))}
             </tbody>
             
@@ -76,27 +98,30 @@ function MacSelector(){
 
 
     const testingJSON = [
-        {id:1, STATION: 'aa:aa:aa:aa:aa', 
-        PWR: -20}, 
-        {id:2, STATION: 'aa:bb:ab:aa:aa', 
-        'PWR': -30},
-    ];
+    { "station": "7C:F6:66:0E:4F:D9", "id": 2, "network_scan_id": 2, "pwr": -36 },
+    { "station": "24:62:AB:34:B7:2A", "id": 3, "network_scan_id": 2, "pwr": -59 },
+    { "station": "BE:D0:C6:AA:9B:1C", "id": 4, "network_scan_id": 2, "pwr": -64 },
+    { "station": "D6:4E:A8:FA:3F:73", "id": 5, "network_scan_id": 2, "pwr": -27 }, 
+    { "station": "E0:09:BF:3F:54:6F", "id": 6, "network_scan_id": 2, "pwr": -90 },
+    { "station": "94:A4:08:47:4D:5E", "id": 7, "network_scan_id": 2, "pwr": -63 },
+    { "station": "F8:4F:AD:92:CB:54", "id": 8, "network_scan_id": 2, "pwr": -90 },
+    { "station": "CE:94:6E:DF:E4:A6", "id": 9, "network_scan_id": 2, "pwr": -54 }];
     
     return(
-        <table>
-        <th>
+        <Table>
+        <TableHeader>
             MacAdrss
-        </th>
-        <th>
+        </TableHeader>
+        <TableHeader>
             PWR
-        </th>
+        </TableHeader>
 
         <>
-        <MakeMACTable jsonMacs= {macInfo}/>
+        <MakeMACTable jsonMacs= {testingJSON}/>
         </>
         
     
-        </table>
+        </Table>
 
     );
 
