@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Intensity from "../visual/intensity";
 import ColorBar from "../visual/colorscale";
 import ReactSpeedometer from "react-d3-speedometer"
-
+import StopScan from "./stop_scan";
 function SignalIntensity(){
 
     //MOCK DATAAAAAA
@@ -41,6 +41,7 @@ function SignalIntensity(){
         segments={10}
         endColor="green"
         />
+        <StopScan/>
     
     </>
 
