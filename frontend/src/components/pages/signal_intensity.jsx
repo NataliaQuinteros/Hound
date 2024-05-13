@@ -30,11 +30,11 @@ function SignalIntensity(){
     return(
     <>
         <h2>Intensidad de señal: {pwr} </h2>
-        <h3>Mac: AA:AA:AA:AA:AA:AA</h3>
+        <h3>Mac: D6:4E:A8:FA:3F:73</h3>
 
         <ReactSpeedometer
         maxValue={0}
-        minValue= {-100}
+        minValue= {-110}
         value={pwr}
         needleColor="black"
         startColor="red"

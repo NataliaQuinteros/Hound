@@ -55,7 +55,7 @@ function MacSelector(){
         const fetchLastSignals = async () => {
           try{
             // const response = await fetch('http://localhost:8000/networks/get_last_id/');
-            const response = await fetch(`https://10.42.0.1/api/stations/get_by_network_id/${currentNetworkScanId}`);
+            const response = await fetch('https://10.42.0.1/api/stations/get_by_network_id/2');
     
           if (!response.ok) {
             throw new Error('Failed to fetch data');
