@@ -55,7 +55,8 @@ function MacSelector(){
     }, []);
 
     const MakeMACTable = ({jsonMacs}) => {
-        
+        console.log(jsonMacs);
+        console.log(macInfo);
         return(
             <tbody>
             {jsonMacs.map(row => (
