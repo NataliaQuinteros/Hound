@@ -18,7 +18,7 @@ function MacSelector(){
     
           const responseData = await response.json();
           // console.log('response', response);
-          setCurrentNetworkScanId(responseData+1);
+          setCurrentNetworkScanId(responseData);
     
           } catch (error) {
             console.error('Error fetching data:', error);
