@@ -117,7 +117,7 @@ function MacSelector(){
         </TableHeader>
 
         <>
-        <MakeMACTable jsonMacs= {testingJSON}/>
+        <MakeMACTable jsonMacs= {macInfo}/>
         </>
         
     
