@@ -36,8 +36,8 @@ class StopScan extends React.Component {
             <>
                 {/* Mandar data de scan y mandar instruccion para extraer la primera fecha de signal scan, luego llamar al create nw scan*/}
                 {(this.state.finished) ? <MacSelector/> : <></>}
-                
-                <Button className="btn" hidden = {this.props.hidden} onClick= {() => {this.handleClick()}} visibility = {this.props.hidden}>
+
+                <Button className="btn" hidden = {!this.props.hidden} onClick= {() => {this.handleClick()}} visibility = {this.props.hidden}>
                 Stop Scan
                 </Button>
                 {/* TODO: hacer que se muestre solo despues de haber apretado stop */}

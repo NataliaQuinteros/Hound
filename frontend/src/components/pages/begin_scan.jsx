@@ -17,7 +17,8 @@ class BeginScan extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            hidden: false
+            hidden: true,
+            stophidden: false
         };
 
         this.toggleStopButton = this.toggleStopButton.bind(this);
@@ -25,7 +26,8 @@ class BeginScan extends React.Component{
 
     toggleStopButton = () =>{
         this.setState(state => ({
-            hidden: !state.hidden
+            stophidden: !state.stophidden,
+            hidden: (state.hidden && state.stophidden) 
         }));
     }
 
@@ -37,11 +39,11 @@ class BeginScan extends React.Component{
     render(){
         return(
             <>
-                <Button className="btn" onClick={() => {this.handleClick()}} visibility = {!this.state.hidden}>
+                <Button className="btn" onClick={() => {this.handleClick()}} visibility = {this.state.hidden}>
                 Begin Scan
                 </Button>
-                {(this.state.hidden)? <Load/> : <></>}
-                < StopScan hidden = {this.state.hidden} toggleStopButton = {this.toggleStopButton}/>
+                {(this.state.stophidden) ? <Load/> : <></>}
+                < StopScan hidden = {this.state.stophidden} toggleStopButton = {this.toggleStopButton}/>
                 
             </>
         );
