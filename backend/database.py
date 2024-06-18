@@ -7,7 +7,7 @@ SQLALCHEMY_LOCATION_DATABASE_URL = "sqlite:///./location_scans.db"
 SQLALCHEMY_SIGNAL_DATABASE_URL = "sqlite:///./signal_scans.db"
 SQLALCHEMY_NETWORK_DATABASE_URL = "sqlite:///./network_scans.db"
 SQLALCHEMY_STATIONS_DATABASE_URL = "sqlite:///./stations_scans.db"
-SQLALCHEMY_MAC_DATABASE_URL = "sqlite:///./mac_databases/mac_vendors.db"
+SQLALCHEMY_MAC_DATABASE_URL = "sqlite:///./mac_databases/mac_vendors_formatted.db"
 
 engine_location = create_engine(SQLALCHEMY_LOCATION_DATABASE_URL, connect_args={"check_same_thread": False})
 engine_signal = create_engine(SQLALCHEMY_SIGNAL_DATABASE_URL, connect_args={"check_same_thread": False})

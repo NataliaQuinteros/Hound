@@ -198,6 +198,8 @@ async def get_signals(db: Session = Depends(get_signals_db)):
 async def get_stations(db: Session = Depends(get_stations_db)):
     return db.query(models.Stations).all()
 
+
+
 @app.get('signals/get_current_signal')
 async def get_current_signal():
     return current_signal_global
