@@ -198,6 +198,10 @@ async def get_signals(db: Session = Depends(get_signals_db)):
 async def get_stations(db: Session = Depends(get_stations_db)):
     return db.query(models.Stations).all()
 
+@app.get('/macs/get/')
+async def get_macs(db: Session = Depends(get_macs_db)):
+    return db.query(models.Macs).all()
+
 
 
 @app.get('signals/get_current_signal')
