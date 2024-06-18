@@ -251,7 +251,8 @@ async def set_current_signal(current_signal: str):
 
 def get_item(stations: str, db: Session = Depends(get_stations_db)):
     return db.query(models.Stations).filter(models.Stations.station == stations).first()
-    
+
+@app.get('/macs/get_item/{macs}') 
 def get_item(macs: str, db: Session = Depends(get_macs_db)):
     return db.query(models.Macs).filter(models.Macs.station == macs).first()
 
