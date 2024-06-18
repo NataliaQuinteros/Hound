@@ -75,18 +75,27 @@ function MacSelector(){
         
     }, []);
 
+
+    //testing
     const MakeMACTable = ({jsonMacs}) => {
         console.log(jsonMacs);
         console.log(macInfo);
         if (jsonMacs != null){
           return(
+            
             <tbody>
-            {jsonMacs.map(row => (
+            {jsonMacs.map(row =>
+            // if the row pwr is considered high, the mac is displayed.
+            row.pwr > -60 ?
+            (
             <TableRow onClick={() => handleSelect(row.station)} key={row.id}>
                 <TableCell>{row.station}</TableCell>
                 <TableCell>{row.pwr}</TableCell>
             </TableRow>
-            ))}
+            ): null
+
+          )}
+          
             </tbody>
             
           );
@@ -119,7 +128,7 @@ function MacSelector(){
         </TableHeader>
 
         <>
-        <MakeMACTable jsonMacs= {macInfo}/>
+        <MakeMACTable jsonMacs= {testingJSON}/>
         </>
         
     

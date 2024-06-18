@@ -44,3 +44,11 @@ class Stations(Base):
     network_scan_id = Column(Integer, index = True)
     station = Column(String)
     pwr = Column(Float)
+
+class Stations(Base):
+    __tablename__ = "stations"
+
+    id = Column(Integer, primary_key = True, index = True)
+    network_scan_id = Column(Integer, index = True)
+    station = Column(String)
+    pwr = Column(Float)

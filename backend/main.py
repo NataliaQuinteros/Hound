@@ -4,7 +4,7 @@ import scan_manager
 from fastapi import FastAPI, HTTPException, Depends, WebSocket, WebSocketDisconnect
 from pydantic import BaseModel, Field
 from datetime import datetime
-from database import engine_location, engine_signal, engine_network, engine_stations, SessionLocalLocation, SessionLocalSignal, SessionLocalNetwork, SessionLocalStations
+from database import engine_location, engine_signal, engine_network, engine_stations, engine_macs, SessionLocalLocation, SessionLocalSignal, SessionLocalNetwork, SessionLocalStations, SessionLocalMac
 from sqlalchemy.orm import Session, relationship
 from sqlalchemy import select, desc,  and_
 from fastapi.middleware.cors import CORSMiddleware
@@ -33,6 +33,7 @@ models.Base.metadata.create_all(bind=engine_location)
 models.Base.metadata.create_all(bind=engine_signal)
 models.Base.metadata.create_all(bind=engine_network)
 models.Base.metadata.create_all(bind=engine_stations)
+models.Base.metadata.create_all(bind=engine_macs)
 
 first_signal_scan_time = ""
 scan_time = []
@@ -84,6 +85,12 @@ def get_stations_db():
     finally:
         db.close()
 
+def get_macs_db():
+    db = SessionLocalMac
+    try:
+        yield db
+    finally:
+        db.close()
 
 # Models
 class NetworkScan(BaseModel):
@@ -109,6 +116,10 @@ class Station(BaseModel):
     network_scan_id: int = Field(gt=-1, lt=101)
     station: str = None
     pwr: float = Field(gt=-101, lt=101)
+
+class Macs(BaseModel):
+    mac: str = None
+    vendor: str = None
 
 class LocationsList(BaseModel):
     locations: List[LocationScan]
@@ -241,6 +252,9 @@ async def set_current_signal(current_signal: str):
 def get_item(stations: str, db: Session = Depends(get_stations_db)):
     return db.query(models.Stations).filter(models.Stations.station == stations).first()
     
+def get_item(macs: str, db: Session = Depends(get_macs_db)):
+    return db.query(models.Stations).filter(models.Stations.station == stations).first()
+
 
 def replace_item(stations: str, new_station: Station, db: Session = Depends(get_stations_db)):
     item = db.query(models.Stations).filter(models.Stations.station == stations).first()

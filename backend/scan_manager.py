@@ -44,6 +44,7 @@ nwid = nwid_response
 # def get_first_signal_time():
 #     return first_signal_started_at
 
+# TODO: PONER ARGUMENTO OPCIONAL CON LA MAC DEL DISPOSITIVO A BUSCAR
 def run_script(id):
     if (id == 0):
         is_first_scan = True
