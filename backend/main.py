@@ -117,7 +117,7 @@ class Station(BaseModel):
     station: str = None
     pwr: float = Field(gt=-101, lt=101)
 
-class Macs(BaseModel):
+class Mac(BaseModel):
     mac: str = None
     vendor: str = None
 
@@ -253,7 +253,7 @@ def get_item(stations: str, db: Session = Depends(get_stations_db)):
     return db.query(models.Stations).filter(models.Stations.station == stations).first()
     
 def get_item(macs: str, db: Session = Depends(get_macs_db)):
-    return db.query(models.Stations).filter(models.Stations.station == stations).first()
+    return db.query(models.Macs).filter(models.Macs.station == macs).first()
 
 
 def replace_item(stations: str, new_station: Station, db: Session = Depends(get_stations_db)):

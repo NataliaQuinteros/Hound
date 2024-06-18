@@ -45,3 +45,14 @@ class Stations(Base):
     station = Column(String)
     pwr = Column(Float)
 
+    # The stations and their maximum powers per scan
+class Macs(Base):
+    __tablename__ = "macs"
+
+    id = Column(Integer, primary_key = True, index = True)
+    prefix = Column(String)
+    vendor = Column(String)
+    private = Column(Integer)
+    block = Column(String)
+    last = Column(DateTime)
+
