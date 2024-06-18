@@ -30,8 +30,8 @@ function SignalIntensity(){
     return(
     <>
         <h2>Intensidad de señal: {pwr} </h2>
-        <h3>Mac: D6:4E:A8:FA:3F:73</h3>
-
+        <h3>Mac: 7C:F6:66:0E:4F:D9</h3>
+        <h3>Vendor: Tuya Smart Inc.</h3>
         <ReactSpeedometer
         maxValue={0}
         minValue= {-110}
